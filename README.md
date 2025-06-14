@@ -1,5 +1,6 @@
 # ActiveDirectoryProject
 Hello! This is my active directory project!
-![An Image of the outline of this project.](https://github.com/user-attachments/assets/fceb2943-5080-4163-8145-d299f878836f)
+![An Image of the outline of this project.](https://github.com/user-attachments/assets/b3e8b6fb-209e-4690-9edc-dd19642e4363)
+
 
 
