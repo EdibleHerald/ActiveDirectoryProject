@@ -2,7 +2,8 @@
 Hello! This is my active directory project!
 Please see the outline below that I made using Draw.io ! 
 
-![An Image of the outline of this project.](https://github.com/user-attachments/assets/ce55c8f0-4510-46db-885b-a411f983bdfe)
+![An Image of the outline of this project.](https://github.com/user-attachments/assets/bd8e4c21-1433-48b6-a64d-bb5c85165999)
+
 
 
 ## Goals and Objectives
