@@ -211,6 +211,44 @@ Now we can test the custom alert! Go to "Alerts" away from "Search" and enable t
 Which means that it works. 
 
 ### Setup Shuffler
+Make a shuffler.io account and make a workflow. Here is mine: 
+![My Shuffler workflow](https://github.com/user-attachments/assets/928b489e-c554-4131-a74a-6f8232a98cde)
+
+There are a few things to do:
+
+#### 1. Create a webhook
+Drag in the webhook application, should be under "triggers" section on the side. 
+This application provides a webhook to receive data. 
+Add this to the custom alert so that the information gets sent to the webhook. 
+
+### 2. Setup Slack application
+Add two Slack apps, make a server in Slack that will receive the alerts. Authenicate the Shuffler app through the Slack application. 
+The first app will send general information about the alert such as username, time, and ip address to the chosen Slack Channel. 
+The second app will send a message to the server IF and ONLY IF a user had been disabled due to the alert. 
+
+### 3. Setup custom email
+Add the user input app. I made it so that it emails a SoC Analyst (in this case, myself) and asks it if it wants to disable a suspicious user. 
+![Email](https://github.com/user-attachments/assets/6dc2593f-6cea-46e4-af21-dc7faac78fb2)
+If true, then clicking the link disables the user!
+
+### 4. Add active directory app
+Configure this app to connect to the active directory and put action "disable user" as well as the variable that represents the username from the alert. 
+
+### 5. Put it all together
+Please look at the picture at the beginning of this section, thats how it should be configured. Starting with the webhook and ending with the second Slack application. 
+Here is what happens during a normal execution:
+Original alert:
+![slackalert](https://github.com/user-attachments/assets/ee45e218-57e5-4d0e-9446-dae2964217b8)
+
+If account is disabled:
+![disabled](https://github.com/user-attachments/assets/0a6f370e-3a69-45e2-bba5-56d2f70b89ac)
+
+
+### Credit
+Thanks to MyDFIR for helping me to create this project with his youtube series covering it! Check out his channel here:
+https://www.youtube.com/@MyDFIR 
+
+
 
 
 
