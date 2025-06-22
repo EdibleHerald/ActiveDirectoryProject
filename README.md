@@ -1,6 +1,4 @@
 # ActiveDirectoryProject
-Hello! This is my active directory project!
-Please see the outline below that I made using Draw.io ! 
 
 ![An Image of the outline of this project.](https://github.com/user-attachments/assets/bd8e4c21-1433-48b6-a64d-bb5c85165999)
 
