@@ -141,6 +141,7 @@ Now, I need to download Splunk Enterprise on this Ubuntu machine, here's how to 
 
 -Run:
 `ls`
+<br>
 -Check if the Splunk Enterprise file is in the directory. Then run:
 `dpkg -i [filename here]`
 > For the filename, you can just type "splunk" then press tab to let it autocomplete the filename for you.
@@ -158,9 +159,58 @@ The username and password I just created works!
 ![Image of Splunk Enterprise Admin Dashboard Login](https://github.com/user-attachments/assets/004f14a6-f08e-44a5-a781-75e9e8d09de0)
 
 ### Using Splunk Enterprise Dashboard to Create a Custom Alert
+Now that I'm in the admin dashboard, I need to create a custom alert and configure it.
+
+First step is to open the "Search and Reporting" app under the apps section in the admin dashboard.
+![Splunk Enterprise Admin Dashboard, with a Red Arrow pointing at the "Search and Reporting" App under the apps button](https://github.com/user-attachments/assets/b8f2b868-84e3-4634-b6aa-3e0d367ee5e0)
+
+Now, I go to "Search" and here I can search for any alert that I want. I can then make that search into a custom alert. 
+Before I start, I have to explain how exactly this event search works in Splunk Enterprise. 
+
+Splunk Enterprise Search and Reporting's search feature needs multiple details to pinpoint the alert we want. Notably, we need the index where the unfiltered alerts are. 
+
+According to Splunk Enterprise documentation:
+> "The index is the repository for Splunk Enterprise data. Splunk Enterprise transforms incoming data into events, which it stores in indexes."
+This would make the Windows Active Directory an index which can be confirmed by checking the "Indexes" page under settings.
+![Indexes pages](https://github.com/user-attachments/assets/d0114b71-91e2-4128-b4f7-4f386b54161c)
+
+We need to select the event we're trying to make into an alert, we want to look for a sign on event code. 
+Simplest way to find this is to sign into one of the Windows machine then using the "Search & Reporting" app to look for that event using "index=mydomain-ad". 
+Another way is to google it which shows:
+> Successful Login Event code 4624
+
+Now we have the event code but there are different types of successful logins. Checking online (I used www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=4624), you can see the different logon types. 
+The one that is most relevant is logon type 10 and 7, which we will use to help filter out alerts. 
+> Why Logon type 10 and 7?
+> Logon type 10 explicitly tracks remote connections through terminal services, RDP, or remote assistance
+> Logon type 7 helps track a remote session by noting if a session is unlocking their screen from a screen saver
+
+Now that we have the most important bits, here is the custom search that I used:
+> index = "mydomain-ad" EventCode=4624 (Logon_Type=7 OR Logon_Type=10) Source_Network_Address=* | stats count by _time,ComputerName,Source_Network_Address,user,Logon_Type
+
+I then press enter to search, then, above the search bar on the right side of the screen, I press "save as" then "alert".
+For the alert configuration, I add it to the triggered alerts section and add a webhook. 
+
+> How did you know how to format the specific details you needed?
+> ![Screenshot of event details given](https://github.com/user-attachments/assets/93bf8fc2-667c-46c5-9943-7fe8f514fa1a)
+> When you click on an event, it gives you details and importantly, variable names. All I did was take those variable names and added a stats count which would take the original alert, and then make a new one that uses only the information that I need.
+> Notes:
+> The "|" line just seperates commands.
+> The "*" means any input
+> "stats count by" means to save ONLY the following information
+> 
+Now, my custom alert is setup!
 
 ### Final Setups
 
+#### Download Splunk Universal Fowarder
+Self-explanatory, go to Splunk website and download splunk universal fowarder onto both the domain controller and test machines.
+
+Now we can test the custom alert! Go to "Alerts" away from "Search" and enable the custom alert. When I login remotely into a user I made, it shows the following:
+![Screenshot of my custom alert](https://github.com/user-attachments/assets/3fd80f82-2248-44c0-8689-8bf5b1c8a82d)
+Which means that it works. 
+
+### Setup Shuffler
 
 
 
